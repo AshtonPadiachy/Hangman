@@ -5,59 +5,18 @@ namespace Hangman.Core.Game
 {
     public class HangmanGame
     {
+        private int _counter;
         private GallowsRenderer _renderer;
-       // private string[] _randomWords = new string[] { "flood", "clock", "cinema", "permanent","absence","sweater","applied","policeman","long","flush"};
-        private int[] _rendererMan = new int[6];
-        private int[] _playerMan;
+
 
         public HangmanGame()
         {
             _renderer = new GallowsRenderer();
         }
 
-        private void GameMove()
-         {
-
-         }
-
-        public void printMan(int lives)
-        {
-
-            if(lives == 0)
-            {
-                _renderer.Render(5, 5, 6);
-            }
-            else if (lives == 1) 
-            {
-                _renderer.Render(5, 5, 5);
-            }
-            else if(lives == 2)
-            {
-                _renderer.Render(5, 5, 4);
-            }
-            else if(lives == 3)
-            {
-                _renderer.Render(5, 5, 3);
-            }
-            else if(lives == 4)
-            {
-                _renderer.Render(5, 5, 2);
-            }
-            else if(lives == 5)
-            {
-                _renderer.Render(5, 5, 1);
-            }
-            else if(lives == 6)
-            {
-                _renderer.Render(5, 5, 0);
-            }
-        }
 
         public void Run()
         {
-            //represent hangman's body
-            _renderer.Render(5, 5, 6);
-
             //Give 20 words to guess from
             string[] listWords = new string[20] { "flood", "clock", "cinema", "permanent", "absence",
             "sweater","applied", "policeman", "long", "flush","video","bolt","voucher", "belly", 
@@ -75,9 +34,12 @@ namespace Hangman.Core.Game
                 guess[w] = '_';
             }
 
-            //looping the game until the correct world is found
+            //looping the game until the correct word is found
             while (true)
             {
+                //represent hangman's body
+                _renderer.Render(5, 5, 6);
+
 
                 Console.SetCursorPosition(0, 13);
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -94,14 +56,19 @@ namespace Hangman.Core.Game
                 var nextGuess = char.Parse(Console.ReadLine());
                 for (int g = 0; g < unknownWord.Length; g++)
                 {
-                    if(nextGuess == unknownWord[g])
+                    if (nextGuess == unknownWord[g])
                     {
                         guess[g] = nextGuess;
                     }
+                    //work on this part and renderer!!!!
+                   // else if(nextGuess != guess[g])
+                   // {
+                     //   Console.WriteLine("Wrong guess! Please try again");
                     
-                }
+                   // }
 
-                
+
+                }
                 /* Console.SetCursorPosition(0, 13);
                   Console.ForegroundColor = ConsoleColor.Blue;
                   Console.Write("Your current guess: ");
