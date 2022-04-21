@@ -28,13 +28,15 @@ namespace Hangman.Core.Game
 
         public void Run()
         {
-            //outputting the random word's length as underscores
+            string guessLetter = string.Empty;
+
+            //outputting the word's length as dashes
             for (int w = 0; w < unknownWord.Length; w++)
             {
                 _guess[w] = '-';
             }
 
-            //looping the game until you die
+            //looping the game until you lose
            while(_lives > 0 && _lives <= 6)
             {
 
@@ -54,38 +56,40 @@ namespace Hangman.Core.Game
                 var nextGuess = char.Parse(Console.ReadLine());
 
                 bool correctWord = false;
-
-                for (int g = 0; g < unknownWord.Length; g++)
                 {
-                    if (nextGuess == unknownWord[g])
+                    for (var g = 0; g < unknownWord.Length; g++)
                     {
-                        _guess[g] = nextGuess;
-                        correctWord = true;
+                        if (nextGuess == unknownWord[g])
+                        {
+                            _guess[g] = nextGuess;
+                            correctWord = true;
+                        }
+
+                    }
+                    if (!correctWord)
+                    {
+                        _lives--;
+                        _renderer.Render(5, 5, _lives);
                     }
 
                 }
-                if (!correctWord)
+                //state when the player won
+                guessLetter = new string(_guess);
+
+                if (guessLetter == unknownWord)
                 {
-                    _lives--;
-                   _renderer.Render(5, 5, _lives);
+                    Console.SetCursorPosition(0, 18);
+                    Console.WriteLine("YAY! YOU SURVIVED! ;)");
                 }
-                
+
 
             }
 
-            //state whether the player won or lost
-
-            string guessLetter = new string(_guess);
-
-            if(guessLetter == unknownWord)
+            //state when the player lost
+            if(guessLetter != unknownWord)
             {
                 Console.SetCursorPosition(0, 18);
-                Console.WriteLine("YOU SURVIVED!");
-            }
-            else
-            {
-                Console.SetCursorPosition(0, 18);
-                Console.WriteLine("YOU HAVE DIED!");
+                Console.WriteLine("SORRY! YOU HAVE DIED! :-(");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("The word was: "+ unknownWord);
 
